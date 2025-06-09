@@ -1,1 +1,1 @@
-export const DB_NAME = "binglaTube"
+export const DB_NAME = "video_player_db"

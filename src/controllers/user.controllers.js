@@ -15,26 +15,20 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 
     // ensuring the user is registering for first time
-    const userExists = User.findOne({
+    const userExists = await User.findOne({
         $or: [{ username }, { email }]
     })
     if (userExists) {
-        throw new ApiError(400, "user already exists");
+        throw new ApiError(400, "a user with this username or email already exists");
     }
 
     // fetching file path which has already been handled by multer
-    const avatarLocalPath = req.files?.avatar[0]?.path;
-    const coverImageLocalPath = req.files?.coverImage[0].path;
-    if(!avatarLocalPath) {
-        throw new ApiError(400, "avatar is required");
-    }
+    const avatarLocalPath = req.files?.avatar?.[0]?.path;
+    const coverImageLocalPath = req.files?.coverImage?.[0]?.path;
 
     // uploading files on cloudinary
     const avatar = await uploadOnCloudinary(avatarLocalPath);
     const coverImage = await uploadOnCloudinary(coverImageLocalPath);
-    if(!avatar) {
-        throw new ApiError(500, "something went wrong while uploading avatar");
-    }
 
     // uploading on db
     const user = await User.create({
@@ -42,8 +36,8 @@ const registerUser = asyncHandler(async (req, res) => {
         email,
         fullName,
         password,
-        avatar: avatar.url,
-        coverImage: coverImage?.url || ""
+        avatar: avatar?.secure_url,
+        coverImage: coverImage?.secure_url
     })
 
     const createdUser = await User.findById(user._id).select(
