@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 export const verifyJWT = asyncHandler(async (req, _, next) => {
     const bearerToken = req.header("Authorization")
-    const token = req.cookies?.accessToken || bearerToken?.startsWith("Bearer ") ? bearerToken.replace("Bearer ", "") : null;
+    const token = req.cookies?.accessToken || (bearerToken?.startsWith("Bearer ") ? bearerToken.replace("Bearer ", "") : null);
     
     if(!token) {
         throw new ApiError(400, "access token absent")
