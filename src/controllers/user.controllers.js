@@ -259,6 +259,79 @@ const updateUserCoverImage = asyncHandler(async (req, res) => {
     )
 })
 
+const getChannelInfo = asyncHandler(async (req, res) => {
+    const {username} = req.params;
+    if(!username?.trim()) {
+        throw new ApiError(400, "invalid search")
+    }
+
+    const channel = await User.aggregate([
+        {
+            $match: {
+                username: username.toLowerCase()
+            }
+        },
+        {
+            $lookup: {
+                from: "subscriptions",
+                localField: "_id",
+                foreignField: "channel",
+                as: "subscribers"
+            }
+        },
+        {
+            $lookup: {
+                from: "subscriptions",
+                localField: "_id",
+                foreignField: "subscriber",
+                as: "subscribed"
+            }
+        },
+        {
+            $addFields: {
+                subscriberCount: {
+                    $size: "$subscribers"
+                },
+                subscribedCount: {
+                    $size: "$subscribed"
+                },
+                isSubscribed: {
+                    $cond: {
+                        if: {
+                            $in: [req.user?._id, "$subscribers.subscriber"]
+                        },
+                        then: true,
+                        else: false
+                    }
+                }
+            }
+        },
+        {
+            $project: {
+                fullName: 1,
+                username: 1,
+                avatar: 1,
+                coverImage: 1,
+                subscriberCount: 1,
+                subscribedCount: 1,
+                isSubscribed: 1
+            }
+        }
+    ])
+
+    console.log("pipeline output -> ", channel);
+    
+    if(!channel?.length) {
+        throw new ApiError(400, "channel not available")
+    }
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200, channel[0], "info fetched successfully")
+    )
+})
+
 export {
     registerUser,
     loginUser,
