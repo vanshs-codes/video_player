@@ -212,8 +212,8 @@ const updateUserDetails = asyncHandler(async (req, res) => {
     }
 
     const updateData = {}
-    if(!username) updateData.username = username
-    if(!email) updateData.email = email
+    if(username) updateData.username = username
+    if(email) updateData.email = email
 
     const user = await User.findByIdAndUpdate(
         req.user?._id,
