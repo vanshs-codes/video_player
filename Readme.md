@@ -85,18 +85,18 @@ The API is versioned under `/api/v1`.
 
 To run this project, you will need to add the following environment variables to your `.env` file:
 
-`PORT=8000`
-`MONGODB_URI=`
-`CORS_ORIGIN=*`
+`PORT=8000`    
+`MONGODB_URI=`    
+`CORS_ORIGIN=*`    
 
-`CLOUDINARY_CLOUD_NAME=`
-`CLOUDINARY_API_KEY=`
-`CLOUDINARY_API_SECRET=`
+`CLOUDINARY_CLOUD_NAME=`    
+`CLOUDINARY_API_KEY=`    
+`CLOUDINARY_API_SECRET=`    
 
-`ACCESS_TOKEN_SECRET=`
-`ACCESS_TOKEN_EXPIRY=`
-`REFRESH_TOKEN_SECRET=`
-`REFRESH_TOKEN_EXPIRY=`
+`ACCESS_TOKEN_SECRET=`    
+`ACCESS_TOKEN_EXPIRY=`    
+`REFRESH_TOKEN_SECRET=`    
+`REFRESH_TOKEN_EXPIRY=`    
 
 ---
 

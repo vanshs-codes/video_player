@@ -133,9 +133,29 @@ const getVideoById = asyncHandler(async (req, res) => {
         throw new ApiError(404, "no such video exists");
     }
 
+    const isOwner = req.user && video.owner.toString() === req.user._id.toString();
+
     // checking if the video is published
-    if(!video.isPublished && video.owner.toString() !== req.user?._id.toString()) {
+    if(!video.isPublished && !isOwner) {
         throw new ApiError(403, "You do not have permission to view this video");
+    }
+
+    // incrementing views
+    if (!isOwner) {
+        Video.findByIdAndUpdate(videoId, {
+            $inc: {
+                views: 1
+            }
+        }).exec();
+    }
+
+    // add to user watch history
+    if (req.user && !isOwner) {
+        await User.findByIdAndUpdate(req.user._id, {
+            $addToSet: {
+                watchHistory: videoId
+            }
+        });
     }
 
     return res
