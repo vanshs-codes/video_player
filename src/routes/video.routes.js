@@ -9,13 +9,22 @@ import {
 } from "../controllers/video.controller.js"
 import { authenticateUser } from "../middlewares/auth.middleware.js"
 import { upload } from "../middlewares/multer.middleware.js"
+import { optionalAuth } from '../middlewares/optionalAuth.middleware.js';
 
 const router = Router();
 
 router.route("/").get(
+    optionalAuth,
     getAllVideos
 );
 
+router.route("/:videoId").get(
+    optionalAuth,
+    getVideoById
+);
+
+
+// secured routes
 router.route("/publish").post(
     authenticateUser,
     upload.fields([
@@ -32,9 +41,6 @@ router.route("/publish").post(
 );
 
 router.route("/:videoId")
-.get(
-    getVideoById
-)
 .delete(
     authenticateUser,
     deleteVideo
