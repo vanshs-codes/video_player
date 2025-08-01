@@ -133,6 +133,5 @@ The server will start on the port specified in your `.env` file (e.g., `http://l
 * **Implement a Subscription Model**: Allow users to subscribe to channels and get a personalized feed.
 * **Add Likes and Comments**: Introduce social features for user engagement on videos.
 * **Create Playlists**: Enable users to organize videos into personal or public playlists.
-* **Optimize Search**: Transition from `$regex` to MongoDB's more efficient `$text` search with a dedicated text index for better performance on large datasets.
 * **Implement Caching**: Use a caching layer like Redis to cache frequently accessed data (e.g., popular videos, user profiles) to reduce database load and improve response times.
 
