@@ -92,7 +92,8 @@ const loginUser = asyncHandler(async (req, res) => {
     // secure options for cookies
     const options = {
         httpOnly: true,
-        secure: true
+        secure: true,
+        sameSite: 'Lax'
     }
 
     // finally sending response
@@ -123,7 +124,8 @@ const logoutUser = asyncHandler(async (req, res) => {
 
     const options = {
         httpOnly: true,
-        secure: true
+        secure: true,
+        sameSite: 'Lax'
     }
 
     res
@@ -161,7 +163,8 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
     const options = {
         httpOnly: true,
-        secure: true
+        secure: true,
+        sameSite: 'Lax'
     }
 
     return res
